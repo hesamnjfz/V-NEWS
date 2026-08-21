@@ -1,31 +1,46 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Cormorant_Garamond, Inter } from "next/font/google";
+import { Bebas_Neue, Newsreader, Figtree } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
+const bebas = Bebas_Neue({
   subsets: ["latin"],
-  weight: ["700", "800", "900"],
-  variable: "--font-playfair",
+  weight: "400",
+  variable: "--font-bebas",
   display: "swap",
 });
 
-const cormorant = Cormorant_Garamond({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  weight: ["600", "700"],
-  variable: "--font-cormorant",
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-newsreader",
   display: "swap",
 });
 
-const inter = Inter({
+const figtree = Figtree({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-figtree",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio — Creative Designer",
-  description: "Editorial luxury portfolio showcasing creative work",
+  title: "V News Network — Clarity in a noisy world",
+  description:
+    "Independent reporting across politics, markets, technology, and culture. Live coverage, investigations, and analysis from V News Network.",
+  keywords: [
+    "V News Network",
+    "news",
+    "breaking news",
+    "investigations",
+    "world news",
+    "live TV",
+  ],
+  openGraph: {
+    title: "V News Network",
+    description: "Clarity in a noisy world.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -36,9 +51,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${cormorant.variable} ${inter.variable}`}
+      className={`${bebas.variable} ${newsreader.variable} ${figtree.variable}`}
     >
-      <body>{children}</body>
+      <body className="font-ui antialiased">{children}</body>
     </html>
   );
 }

@@ -9,29 +9,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cream: {
-          DEFAULT: "#F5F0E8",
-          dark: "#EDE7D9",
-          deeper: "#E4DCC8",
-        },
-        gold: {
-          DEFAULT: "#C9A84C",
-          light: "#E8C97A",
-          dark: "#A07830",
+        paper: {
+          DEFAULT: "#F7F5F1",
+          deep: "#EBE7DF",
         },
         ink: {
-          DEFAULT: "#1A1610",
-          soft: "#3D3528",
-          muted: "#6B5F4A",
+          DEFAULT: "#0E1116",
+          soft: "#2A303A",
+          muted: "#6A7380",
         },
+        signal: {
+          DEFAULT: "#C8102E",
+          deep: "#9A0C22",
+        },
+        steel: "#3D4654",
       },
       fontFamily: {
-        display: ["Playfair Display", "serif"],
-        serif: ["Cormorant Garamond", "serif"],
-        sans: ["Inter", "sans-serif"],
-      },
-      fontWeight: {
-        black: "900",
+        display: ["var(--font-bebas)", "Impact", "sans-serif"],
+        editorial: ["var(--font-newsreader)", "Georgia", "serif"],
+        ui: ["var(--font-figtree)", "system-ui", "sans-serif"],
       },
     },
   },

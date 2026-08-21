@@ -1,19 +1,34 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Blog from "@/components/Blog";
+import Trending from "@/components/Trending";
+import TopStories from "@/components/TopStories";
+import TickerBand from "@/components/TickerBand";
+import Categories from "@/components/Categories";
+import Investigations from "@/components/Investigations";
+import LiveBroadcast from "@/components/LiveBroadcast";
+import Voices from "@/components/Voices";
+import Network from "@/components/Network";
+import Newsletter from "@/components/Newsletter";
 import Contact from "@/components/Contact";
-import Expertise from "@/components/Expertise";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main>
+    <main className="w-full overflow-x-hidden bg-paper">
       <Navbar />
       <Hero />
-      <About />
-      <Blog />
-      <Expertise />
+      <Trending />
+      <TopStories />
+      <TickerBand tone="dark" />
+      <Categories />
+      <Investigations />
+      <TickerBand tone="light" />
+      <LiveBroadcast />
+      <Voices />
+      <Network />
+      <Newsletter />
       <Contact />
+      <Footer />
     </main>
   );
 }
