@@ -270,14 +270,9 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 0.6 }}
-          className="w-full border-t border-signal/30 bg-black/70 backdrop-blur-md"
-        >
+        <div className="w-full border-t border-signal/30 bg-black/85">
           <BreakingTicker />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -11,38 +11,56 @@ export default function BreakingTicker({
   className = "",
   compact = false,
 }: BreakingTickerProps) {
-  const ticker = [...breakingHeadlines, ...breakingHeadlines];
+  const items = [...breakingHeadlines, ...breakingHeadlines];
 
   return (
     <div
-      className={`flex w-full items-stretch overflow-hidden border border-signal/40 bg-ink text-paper ${className}`}
+      className={`flex w-full min-h-[2.75rem] items-stretch overflow-hidden border border-signal/40 bg-ink text-paper sm:min-h-[3.25rem] ${
+        compact ? "" : "md:min-h-[3.5rem]"
+      } ${className}`}
+      aria-label="Breaking news ticker"
     >
+      {/* Label rail */}
       <div
         className={`flex shrink-0 items-center gap-2 bg-signal font-ui font-extrabold uppercase text-paper ${
           compact
-            ? "px-3 py-2 text-[9px] tracking-[0.2em]"
-            : "px-3.5 py-2.5 text-[9px] tracking-[0.22em] sm:px-4 sm:text-[10px] sm:tracking-[0.28em]"
+            ? "px-3 text-[9px] tracking-[0.2em]"
+            : "px-3.5 text-[9px] tracking-[0.22em] sm:px-4 sm:text-[10px] sm:tracking-[0.28em]"
         }`}
+        style={{ paddingTop: "10px", paddingBottom: "10px" }}
       >
-        <span className="live-dot h-1.5 w-1.5 rounded-full bg-paper" />
+        <span className="live-dot h-1.5 w-1.5 shrink-0 rounded-full bg-paper" />
         Breaking
       </div>
-      <div className="relative min-w-0 flex-1 overflow-hidden bg-ink/90">
+
+      {/* Marquee */}
+      <div className="relative flex min-w-0 flex-1 items-center overflow-hidden bg-ink/90">
         <div
-          className={`ticker-track flex w-max ${
-            compact ? "gap-8 py-2 pl-3" : "gap-10 py-2.5 pl-4 sm:gap-12 sm:pl-5"
+          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-6 bg-gradient-to-r from-ink/90 to-transparent sm:w-10"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-6 bg-gradient-to-l from-ink/90 to-transparent sm:w-10"
+          aria-hidden
+        />
+
+        <div
+          className={`ticker-track flex w-max items-center ${
+            compact ? "gap-8 pl-3" : "gap-10 pl-4 sm:gap-12 sm:pl-5"
           }`}
         >
-          {ticker.map((line, i) => (
+          {items.map((line, i) => (
             <span
               key={`${line}-${i}`}
-              className={`whitespace-nowrap font-ui font-bold tracking-wide text-paper ${
+              className={`flex items-center whitespace-nowrap font-ui font-bold tracking-wide text-paper ${
                 compact
                   ? "text-[11px]"
                   : "text-[12px] sm:text-[13px] md:text-sm"
               }`}
             >
-              <span className="mr-3 text-signal">●</span>
+              <span className="mr-3 text-signal" aria-hidden>
+                ●
+              </span>
               {line}
             </span>
           ))}
