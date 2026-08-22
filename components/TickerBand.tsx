@@ -7,6 +7,7 @@ import {
   wirePulseBars,
   worldHeadlines,
 } from "@/lib/data";
+import { useTickerPause } from "@/lib/useTickerPause";
 
 type WireRow = {
   id: string;
@@ -147,9 +148,11 @@ export default function TickerBand({
   tone?: "dark" | "light";
 }) {
   const isDark = tone === "dark";
+  const sectionRef = useTickerPause<HTMLElement>();
 
   return (
     <section
+      ref={sectionRef}
       className={`ticker-band relative w-full overflow-hidden border-y-2 border-signal ${
         isDark ? "ticker-band--dark bg-ink text-paper" : "ticker-band--light bg-paper text-ink"
       }`}
@@ -209,7 +212,7 @@ export default function TickerBand({
                 </div>
 
                 {/* Marquee */}
-                <div className="relative flex min-w-0 flex-1 items-center overflow-hidden">
+                <div className="ticker-viewport relative flex min-w-0 flex-1 items-center overflow-hidden">
                   <div
                     className={`pointer-events-none absolute inset-y-0 left-0 z-[1] w-8 bg-gradient-to-r to-transparent sm:w-12 ${
                       isDark ? "from-ink" : "from-paper"

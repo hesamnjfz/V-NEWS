@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { heroBackgrounds } from "@/lib/images";
 import BreakingTicker from "@/components/BreakingTicker";
 import { brand, featuredStory, flashAlerts } from "@/lib/data";
+
+const reveal = { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const };
 
 export default function Hero() {
   const [clock, setClock] = useState("");
@@ -37,44 +39,38 @@ export default function Hero() {
     return () => window.clearInterval(id);
   }, []);
 
-  const currentBg = heroBackgrounds[bgIndex];
-
   return (
     <section
       id="hero"
       className="relative flex min-h-[100dvh] w-full flex-col overflow-hidden bg-[#0e1116] text-paper"
     >
-      {/* Rotating local backgrounds — every 10s */}
+      {/* Rotating backgrounds — CSS crossfade + ken-burns (no Framer on images) */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <AnimatePresence mode="sync">
-          <motion.div
-            key={currentBg.src}
-            className="absolute inset-0"
-            initial={{ opacity: 0, scale: 1.08 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+        {heroBackgrounds.map((bg, i) => (
+          <div
+            key={bg.src}
+            className={`absolute inset-0 transition-opacity duration-[1200ms] ease-out ${
+              i === bgIndex ? "opacity-100" : "opacity-0"
+            }`}
+            aria-hidden={i !== bgIndex}
           >
-            <motion.div
-              className="absolute inset-[-3%]"
-              animate={{ scale: [1, 1.05] }}
-              transition={{
-                duration: 10,
-                ease: "linear",
-              }}
+            <div
+              className={`absolute inset-[-3%] ${
+                i === bgIndex ? "hero-bg-ken-burns" : ""
+              }`}
             >
               <Image
-                src={currentBg.src}
-                alt={currentBg.alt}
+                src={bg.src}
+                alt={bg.alt}
                 fill
-                priority={bgIndex === 0}
-                quality={90}
+                priority={i === 0}
+                quality={85}
                 sizes="100vw"
                 className="object-cover object-[center_30%]"
               />
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
+            </div>
+          </div>
+        ))}
 
         <div className="absolute inset-0 bg-black/70" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black/92" />
@@ -91,15 +87,15 @@ export default function Hero() {
 
       <div className="site-wrap relative z-[1] flex flex-1 flex-col items-center justify-center py-8 text-center sm:py-12 md:py-14">
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ ...reveal, delay: 0.12 }}
           className="flex w-full max-w-3xl flex-col items-center px-1"
         >
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.45 }}
+            transition={{ delay: 0.18, duration: 0.4 }}
             className="mb-5 font-ui text-[9px] font-bold uppercase tracking-[0.28em] text-paper/50 sm:mb-6 sm:text-[10px]"
           >
             {clock || "—"}
@@ -110,7 +106,7 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, scaleX: 0.4 }}
             animate={{ opacity: 1, scaleX: 1 }}
-            transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ ...reveal, delay: 0.24 }}
             className="mb-6 flex items-center justify-center gap-3 sm:mb-8 sm:gap-4"
             aria-hidden
           >
@@ -120,9 +116,9 @@ export default function Hero() {
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, delay: 0.65 }}
+            transition={{ ...reveal, delay: 0.3 }}
             className="font-display text-[clamp(5rem,20vw,11rem)] leading-none tracking-[0.02em]"
           >
             <span className="text-signal drop-shadow-[0_0_40px_rgba(200,16,46,0.35)]">
@@ -131,9 +127,9 @@ export default function Hero() {
           </motion.h1>
 
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.8 }}
+            transition={{ ...reveal, delay: 0.38 }}
             className="mt-3 flex flex-col items-center gap-1.5 sm:mt-4 sm:flex-row sm:items-center sm:gap-4"
           >
             <span className="font-display text-[clamp(1.5rem,5.5vw,3rem)] leading-none tracking-[0.22em]">
@@ -148,7 +144,7 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, scaleX: 0.4 }}
             animate={{ opacity: 1, scaleX: 1 }}
-            transition={{ duration: 0.8, delay: 0.95 }}
+            transition={{ ...reveal, delay: 0.44 }}
             className="mt-5 flex items-center justify-center gap-3 sm:mt-6 sm:gap-4"
             aria-hidden
           >
@@ -157,18 +153,18 @@ export default function Hero() {
           </motion.div>
 
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.05 }}
+            transition={{ ...reveal, delay: 0.5 }}
             className="mt-6 max-w-md font-editorial text-lg italic leading-relaxed text-paper/95 sm:mt-7 sm:text-xl md:text-2xl"
           >
             {brand.tagline}
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.15 }}
+            transition={{ ...reveal, delay: 0.56 }}
             className="mt-8 flex w-full max-w-xs flex-col gap-3 sm:mt-9 sm:max-w-md sm:flex-row sm:justify-center sm:gap-4"
           >
             <a
@@ -179,7 +175,7 @@ export default function Hero() {
             </a>
             <a
               href="#live"
-              className="inline-flex items-center justify-center gap-2 border border-paper/40 bg-black/30 px-8 py-3.5 font-ui text-[11px] font-extrabold uppercase tracking-[0.2em] text-paper backdrop-blur-sm transition-colors hover:border-paper hover:bg-black/50 sm:px-9 sm:py-4"
+              className="inline-flex items-center justify-center gap-2 border border-paper/40 bg-black/40 px-8 py-3.5 font-ui text-[11px] font-extrabold uppercase tracking-[0.2em] text-paper transition-colors hover:border-paper hover:bg-black/50 sm:px-9 sm:py-4"
             >
               <span className="live-dot h-1.5 w-1.5 rounded-full bg-signal" />
               Watch Live
@@ -189,7 +185,7 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 1.3 }}
+            transition={{ duration: 0.45, delay: 0.64 }}
             className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-y border-white/15 py-3.5 sm:mt-10 sm:gap-x-8 sm:py-4"
           >
             {[
@@ -213,14 +209,14 @@ export default function Hero() {
       <div className="relative z-[1] shrink-0 pb-0">
         <div className="site-wrap pb-5 sm:pb-6 md:pb-8">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.35, duration: 0.75 }}
+            transition={{ ...reveal, delay: 0.7 }}
             className="mx-auto grid max-w-5xl gap-3 lg:grid-cols-[1.45fr_1fr] lg:gap-4"
           >
             <a
               href="#top-stories"
-              className="group border border-white/15 bg-black/60 p-5 backdrop-blur-md transition-colors hover:border-signal/50 sm:p-6 md:p-7"
+              className="group border border-white/15 bg-black/65 p-5 transition-colors hover:border-signal/50 sm:p-6 md:p-7"
             >
               <div className="mb-3 flex flex-wrap items-center gap-2.5 sm:mb-4">
                 <span className="bg-signal px-2.5 py-1 font-ui text-[9px] font-extrabold uppercase tracking-[0.2em] text-paper">

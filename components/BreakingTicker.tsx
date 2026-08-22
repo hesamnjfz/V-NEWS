@@ -1,6 +1,7 @@
 "use client";
 
 import { breakingHeadlines } from "@/lib/data";
+import { useTickerPause } from "@/lib/useTickerPause";
 
 type BreakingTickerProps = {
   className?: string;
@@ -11,10 +12,12 @@ export default function BreakingTicker({
   className = "",
   compact = false,
 }: BreakingTickerProps) {
+  const rootRef = useTickerPause<HTMLDivElement>();
   const items = [...breakingHeadlines, ...breakingHeadlines];
 
   return (
     <div
+      ref={rootRef}
       className={`flex w-full min-h-[2.75rem] items-stretch overflow-hidden border border-signal/40 bg-ink text-paper sm:min-h-[3.25rem] ${
         compact ? "" : "md:min-h-[3.5rem]"
       } ${className}`}
@@ -34,7 +37,7 @@ export default function BreakingTicker({
       </div>
 
       {/* Marquee */}
-      <div className="relative flex min-w-0 flex-1 items-center overflow-hidden bg-ink/90">
+      <div className="ticker-viewport relative flex min-w-0 flex-1 items-center overflow-hidden bg-ink/90">
         <div
           className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-6 bg-gradient-to-r from-ink/90 to-transparent sm:w-10"
           aria-hidden
